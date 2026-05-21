@@ -1,0 +1,276 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background: #d2c7ef;
+    color: #2e175a;
+    min-height: 100vh;
+    padding: 30px;
+}
+
+
+#encabezado{
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+#tituloPrincipal{
+    font-size: 3rem;
+    color: #6a0dad;
+    margin-bottom: 10px;
+}
+
+#descripcionPagina{
+    color: #5e548e;
+    font-size: 1.1rem;
+}
+
+
+#contenidoPrincipal{
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+
+#seccionFormulario{
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0px 10px 30px rgba(106, 13, 173, 0.15);
+    position: sticky;
+    top: 20px;
+}
+
+#seccionFormulario h2{
+    margin-bottom: 20px;
+    color: #6a0dad;
+}
+
+#formularioRuta{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.grupoInput{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.grupoInput label{
+    font-weight: bold;
+    color: #4b2e83;
+}
+
+.grupoInput input{
+    padding: 12px;
+    border-radius: 12px;
+    border: 2px solid #d6c2ff;
+    outline: none;
+    transition: 0.3s;
+}
+
+.grupoInput input:focus{
+    border-color: #8a2be2;
+    box-shadow: 0px 0px 10px rgba(138, 43, 226, 0.2);
+}
+
+
+#btnCrearRuta{
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #8a2be2, #6a0dad);
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#btnCrearRuta:hover{
+    transform: translateY(-3px);
+    box-shadow: 0px 10px 20px rgba(106, 13, 173, 0.3);
+}
+
+
+#seccionRutas h2{
+    margin-bottom: 20px;
+    color: #6a0dad;
+}
+
+
+#contenedorRutas{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+
+.tarjetaRuta{
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0px 10px 25px rgba(106, 13, 173, 0.15);
+    transition: 0.3s;
+    border: 2px solid transparent;
+}
+
+.tarjetaRuta:hover{
+    transform: translateY(-5px);
+    border-color: #c084fc;
+}
+
+.tituloRuta{
+    color: #6a0dad;
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+}
+
+.textoConductor,
+.textoHora,
+.textoClima{
+    margin-bottom: 10px;
+    color: #5e548e;
+}
+
+
+.contenedorEstudiantes{
+    margin-top: 20px;
+}
+
+.contenedorEstudiantes h4{
+    margin-bottom: 10px;
+    color: #6a0dad;
+}
+
+.listaEstudiantes{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.listaEstudiantes li{
+    background: #f3e8ff;
+    padding: 10px;
+    border-radius: 10px;
+    color: #4b2e83;
+}
+
+
+.contenedorAgregarEstudiante{
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.inputEstudiante{
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #d6c2ff;
+    outline: none;
+}
+
+.btnAgregarEstudiante{
+    padding: 10px 15px;
+    border: none;
+    border-radius: 10px;
+    background: #8a2be2;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btnAgregarEstudiante:hover{
+    background: #6a0dad;
+}
+
+
+.contenedorBotones{
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.btnEditar,
+.btnEliminar{
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btnEditar{
+    background: #7b2cbf;
+}
+
+.btnEliminar{
+    background: #c9184a;
+}
+
+.btnEditar:hover,
+.btnEliminar:hover{
+    opacity: 0.8;
+}
+
+
+/* TABLET */
+@media(max-width: 900px){
+
+    #contenidoPrincipal{
+        grid-template-columns: 1fr;
+    }
+
+    #seccionFormulario{
+        position: static;
+    }
+
+}
+
+/* CELULAR */
+@media(max-width: 600px){
+
+    body{
+        padding: 15px;
+    }
+
+    #tituloPrincipal{
+        font-size: 2rem;
+    }
+
+    .contenedorAgregarEstudiante{
+        flex-direction: column;
+    }
+
+    .contenedorBotones{
+        flex-direction: column;
+    }
+
+}
+
+/* CELULARES PEQUEÑOS */
+@media(max-width: 400px){
+
+    #tituloPrincipal{
+        font-size: 1.6rem;
+    }
+
+    .tarjetaRuta{
+        padding: 15px;
+    }
+
+}

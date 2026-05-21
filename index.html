@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rutas Seguras Kids</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header id="encabezado">
+        <h1 id="tituloPrincipal">Rutas Seguras Kids</h1>
+        <p id="descripcionPagina">
+            Sistema de gestión de rutas escolares
+        </p>
+    </header>
+
+    <main id="contenidoPrincipal">
+
+        <section id="seccionFormulario">
+
+            <h2>Crear nueva ruta</h2>
+
+            <form id="formularioRuta">
+
+                <div class="grupoInput">
+                    <label for="nombreRuta">Nombre de la ruta</label>
+
+                    <input 
+                        type="text"
+                        id="nombreRuta"
+                        placeholder="Ejemplo: Ruta Norte"
+                    >
+                </div>
+
+                <div class="grupoInput">
+                    <label for="nombreConductor">Nombre del conductor</label>
+
+                    <input 
+                        type="text"
+                        id="nombreConductor"
+                        placeholder="Ejemplo: Carlos Perez"
+                    >
+                </div>
+
+                <div class="grupoInput">
+                    <label for="horaSalida">Hora de salida</label>
+
+                    <input 
+                        type="time"
+                        id="horaSalida"
+                    >
+                </div>
+
+                <div class="grupoInput">
+                    <label for="ciudadRuta">Ciudad</label>
+
+                    <input 
+                        type="text"
+                        id="ciudadRuta"
+                        placeholder="Ejemplo: Bogotá"
+                    >
+                </div>
+
+                <button type="button" id="btnCrearRuta">
+                    Crear Ruta
+                </button>
+
+            </form>
+
+        </section>
+
+        <section id="seccionRutas">
+
+            <h2>Rutas registradas</h2>
+
+            <div id="contenedorRutas">
+
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <template id="templateRuta">
+
+        <article class="tarjetaRuta">
+
+            <h3 class="tituloRuta"></h3>
+
+            <p class="textoConductor"></p>
+
+            <p class="textoHora"></p>
+
+            <p class="textoClima"></p>
+
+            <div class="contenedorEstudiantes">
+
+                <h4>Estudiantes</h4>
+
+                <ul class="listaEstudiantes">
+
+                </ul>
+
+            </div>
+
+            <div class="contenedorAgregarEstudiante">
+
+                <input 
+                    type="text"
+                    class="inputEstudiante"
+                    placeholder="Nombre estudiante"
+                >
+
+                <button class="btnAgregarEstudiante">
+                    Agregar
+                </button>
+
+            </div>
+
+            <div class="contenedorBotones">
+
+                <button class="btnEditar">
+                    Editar
+                </button>
+
+                <button class="btnEliminar">
+                    Eliminar
+                </button>
+
+            </div>
+
+        </article>
+
+    </template>
+
+    <script src="app.js" type="module"></script>
+
+</body>
+</html>

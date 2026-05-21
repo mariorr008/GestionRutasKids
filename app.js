@@ -1,3 +1,5 @@
+let rutas = [];
+
 const nombreRuta = document.getElementById("nombreRuta");
 const nombreConductor = document.getElementById("nombreConductor");
 const horaSalida = document.getElementById("horaSalida");
@@ -6,6 +8,7 @@ const contenedorRutas = document.getElementById("contenedorRutas");
 const btnCrearRuta = document.getElementById("btnCrearRuta");
 const templateRuta = document.getElementById("templateRuta");
 
+
 function crearTarjetaProyecto(ruta, conductor, hora, ciudad) {
     const tarjeta = templateRuta.content.cloneNode(true);
 
@@ -13,6 +16,74 @@ function crearTarjetaProyecto(ruta, conductor, hora, ciudad) {
     tarjeta.querySelector(".textoConductor").textContent = `Conductor: ${conductor}`;
     tarjeta.querySelector(".textoHora").textContent = `Hora: ${hora}`;
     tarjeta.querySelector(".textoClima").textContent = `Ciudad: ${ciudad}`;
+
+    const tarjetaElemento = tarjeta.querySelector(".tarjetaRuta");
+    const inputEstudiante = tarjetaElemento.querySelector(".inputEstudiante");
+    const btnAgregarEstudiante = tarjetaElemento.querySelector(".btnAgregarEstudiante");
+    const listaEstudiantes = tarjetaElemento.querySelector(".listaEstudiantes");
+
+    const btnEditar = tarjetaElemento.querySelector(".btnEditar");
+    const btnEliminar = tarjetaElemento.querySelector(".btnEliminar");
+    const tituloRutaEl = tarjetaElemento.querySelector(".tituloRuta");
+    const conductorEl = tarjetaElemento.querySelector(".textoConductor");
+    const horaEl = tarjetaElemento.querySelector(".textoHora");
+    const ciudadEl = tarjetaElemento.querySelector(".textoClima");
+
+    const contenedorEdicion = tarjetaElemento.querySelector(".contenedorEdicionRuta");
+    const editarRutaInput = tarjetaElemento.querySelector(".editarRutaInput");
+    const editarConductorInput = tarjetaElemento.querySelector(".editarConductorInput");
+    const editarHoraInput = tarjetaElemento.querySelector(".editarHoraInput");
+    const editarCiudadInput = tarjetaElemento.querySelector(".editarCiudadInput");
+    const btnGuardarEdicion = tarjetaElemento.querySelector(".btnGuardarEdicion");
+    const btnCancelarEdicion = tarjetaElemento.querySelector(".btnCancelarEdicion");
+
+    btnAgregarEstudiante.addEventListener("click", () => {
+        const nombreEstudiante = inputEstudiante.value.trim();
+        if (nombreEstudiante === "") {
+            alert("Ingrese el nombre del estudiante");
+            return;
+        }
+
+        const estudianteItem = document.createElement("li");
+        estudianteItem.textContent = nombreEstudiante;
+        listaEstudiantes.appendChild(estudianteItem);
+        inputEstudiante.value = "";
+        inputEstudiante.focus();
+    });
+
+    btnEditar.addEventListener("click", () => {
+        contenedorEdicion.style.display = "block";
+        btnEditar.style.display = "none";
+    });
+
+    btnGuardarEdicion.addEventListener("click", () => {
+        const nuevoRuta = editarRutaInput.value.trim();
+        const nuevoConductor = editarConductorInput.value.trim();
+        const nuevaHora = editarHoraInput.value.trim();
+        const nuevaCiudad = editarCiudadInput.value.trim();
+
+        if (nuevoRuta === "" || nuevoConductor === "" || nuevaHora === "" || nuevaCiudad === "") {
+            alert("Complete todos los campos");
+            return;
+        }
+
+        tituloRutaEl.textContent = nuevoRuta;
+        conductorEl.textContent = `Conductor: ${nuevoConductor}`;
+        horaEl.textContent = `Hora: ${nuevaHora}`;
+        ciudadEl.textContent = `Ciudad: ${nuevaCiudad}`;
+
+        contenedorEdicion.style.display = "none";
+        btnEditar.style.display = "inline-block";
+    });
+
+    btnCancelarEdicion.addEventListener("click", () => {
+        contenedorEdicion.style.display = "none";
+        btnEditar.style.display = "inline-block";
+    });
+
+    btnEliminar.addEventListener("click", () => {
+        tarjetaElemento.remove();
+    });
 
     return tarjeta;
 }

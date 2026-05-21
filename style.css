@@ -227,6 +227,68 @@ body{
     opacity: 0.8;
 }
 
+.contenedorEdicionRuta{
+    display: none;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 18px;
+    background: #f8f0ff;
+    border: 1px solid rgba(106, 13, 173, 0.15);
+}
+
+.contenedorEdicionRuta h4{
+    margin-bottom: 1rem;
+    color: #6a0dad;
+    font-size: 1.1rem;
+}
+
+.contenedorEdicionRuta input{
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 0.85rem;
+    border-radius: 12px;
+    border: 2px solid #d6c2ff;
+    outline: none;
+    transition: 0.3s;
+    background: white;
+}
+
+.contenedorEdicionRuta input:focus{
+    border-color: #8a2be2;
+    box-shadow: 0px 0px 10px rgba(138, 43, 226, 0.18);
+}
+
+.contenedorBotonesEdicion{
+    display: flex;
+    gap: 0.75rem;
+}
+
+.btnGuardarEdicion,
+.btnCancelarEdicion{
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+.btnGuardarEdicion{
+    background: linear-gradient(135deg, #8a2be2, #6a0dad);
+    color: white;
+}
+
+.btnCancelarEdicion{
+    background: #e5d1ff;
+    color: #4b2e83;
+}
+
+.btnGuardarEdicion:hover,
+.btnCancelarEdicion:hover{
+    transform: translateY(-2px);
+    opacity: 0.95;
+}
 
 /* TABLET */
 @media(max-width: 900px){

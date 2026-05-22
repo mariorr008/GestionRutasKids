@@ -70,6 +70,16 @@ function crearTarjetaProyecto(ruta, conductor, hora, ciudad) {
         estudianteItem.textContent = nombreEstudiante;
         listaEstudiantes.appendChild(estudianteItem);
         inputEstudiante.value = "";
+        const eventoEstudiante = new CustomEvent("estudianteAgregado", {
+
+        detail: {
+            estudiante: nombreEstudiante,
+            ruta: ruta
+        }
+
+    });
+
+    document.dispatchEvent(eventoEstudiante);
     });
 
     btnEditar.addEventListener("click", () => {
@@ -130,6 +140,16 @@ async function AgregarTarjeta() {
         return;
     }
 
+    const nuevaRutaObjeto = {
+    ruta: nombreRuta.value,
+    conductor: nombreConductor.value,
+    hora: horaSalida.value,
+    ciudad: ciudadRuta.value,
+    temperatura: temperatura
+    };
+    rutas.push(nuevaRutaObjeto);
+
+
     const nuevaTarjeta = crearTarjetaProyecto(
         nombreRuta.value,
         nombreConductor.value,
@@ -143,3 +163,14 @@ async function AgregarTarjeta() {
 }
 
 btnCrearRuta.addEventListener("click", AgregarTarjeta);
+
+document.addEventListener("estudianteAgregado", (event) => {
+
+    console.log(
+        `Nuevo estudiante agregado: ${event.detail.estudiante}
+        En la ruta: ${event.detail.ruta}`
+    );
+
+});
+
+console.log(rutas);

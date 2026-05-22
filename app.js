@@ -8,6 +8,28 @@ const contenedorRutas = document.getElementById("contenedorRutas");
 const btnCrearRuta = document.getElementById("btnCrearRuta");
 const templateRuta = document.getElementById("templateRuta");
 
+async function obtenerClima(ciudad) {
+
+    const apiKey = "98a1bb55ebe4e29a656ab2d1d6c02c1e";
+
+    const url =
+    `https://api.openweathermap.org/data/2.5/weather?q=${ciudad}&appid=${apiKey}&units=metric&lang=es`;
+
+    const respuesta = await fetch(url);
+
+    if (!respuesta.ok) {
+        throw new Error("No se pudo obtener el clima");
+    }
+
+    const datos = await respuesta.json();
+
+    if (!datos.main || typeof datos.main.temp !== "number") {
+        throw new Error("Respuesta de clima inválida");
+    }
+
+    return datos.main.temp;
+}
+
 
 function crearTarjetaProyecto(ruta, conductor, hora, ciudad) {
     const tarjeta = templateRuta.content.cloneNode(true);
@@ -48,7 +70,6 @@ function crearTarjetaProyecto(ruta, conductor, hora, ciudad) {
         estudianteItem.textContent = nombreEstudiante;
         listaEstudiantes.appendChild(estudianteItem);
         inputEstudiante.value = "";
-        inputEstudiante.focus();
     });
 
     btnEditar.addEventListener("click", () => {
@@ -95,14 +116,29 @@ function limpiarFormulario() {
     ciudadRuta.value = "";
 }
 
-function AgregarTarjeta() {
+async function AgregarTarjeta() {
     if (nombreRuta.value.trim() === "" || nombreConductor.value.trim() === "" || horaSalida.value.trim() === "" || ciudadRuta.value.trim() === "") {
         alert("Complete todos los campos");
         return;
     }
 
-    const nuevaTarjeta = crearTarjetaProyecto(nombreRuta.value, nombreConductor.value, horaSalida.value, ciudadRuta.value);
+    let temperatura;
+    try {
+        temperatura = await obtenerClima(ciudadRuta.value);
+    } catch (error) {
+        alert("No se pudo obtener el clima. Revisa el nombre de la ciudad e inténtalo de nuevo.");
+        return;
+    }
+
+    const nuevaTarjeta = crearTarjetaProyecto(
+        nombreRuta.value,
+        nombreConductor.value,
+        horaSalida.value,
+        `${ciudadRuta.value} - ${temperatura}°C`
+    );
+
     contenedorRutas.appendChild(nuevaTarjeta);
+
     limpiarFormulario();
 }
 

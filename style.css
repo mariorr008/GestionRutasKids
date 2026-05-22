@@ -8,9 +8,8 @@
 
 body{
     font-family: Arial, Helvetica, sans-serif;
-    background: #d2c7ef;
-    color: #2e175a;
-    min-height: 100vh;
+    background-image: url('img/ChatGPT\ Image\ 22\ may\ 2026\,\ 10_19_02.png');
+    background-size: cover;
     padding: 30px;
 }
 
@@ -21,14 +20,28 @@ body{
 }
 
 #tituloPrincipal{
-    font-size: 3rem;
+    font-size: 4rem;
     color: #6a0dad;
     margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.892);
+    display: inline-block;
+    border-radius: 15px;
+    padding: 10px 10px;
+}
+
+#subtitulo{
+    font-size: 2rem;
+    color: #6a0dad;
+    background: rgba(255, 255, 255, 0.942);
+    display: inline-block;
+    border-radius: 15px;
+    padding: 8px 12px;
 }
 
 #descripcionPagina{
     color: #5e548e;
     font-size: 1.1rem;
+    
 }
 
 
@@ -58,6 +71,7 @@ body{
     display: flex;
     flex-direction: column;
     gap: 20px;
+    
 }
 
 .grupoInput{
@@ -113,16 +127,17 @@ body{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
+    
 }
 
 
 .tarjetaRuta{
-    background: white;
     border-radius: 20px;
     padding: 20px;
-    box-shadow: 0px 10px 25px rgba(106, 13, 173, 0.15);
     transition: 0.3s;
     border: 2px solid transparent;
+    background: rgba(255, 255, 255, 0.96);
+
 }
 
 .tarjetaRuta:hover{

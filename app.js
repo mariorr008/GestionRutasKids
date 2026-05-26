@@ -1,4 +1,4 @@
-let rutas = [];
+let rutas = JSON.parse(localStorage.getItem("rutas")) || [];
 
 const nombreRuta = document.getElementById("nombreRuta");
 const nombreConductor = document.getElementById("nombreConductor");
@@ -8,12 +8,18 @@ const contenedorRutas = document.getElementById("contenedorRutas");
 const btnCrearRuta = document.getElementById("btnCrearRuta");
 const templateRuta = document.getElementById("templateRuta");
 
+function guardarLocalStorage() {
+
+    localStorage.setItem(
+        "rutas", JSON.stringify(rutas)
+    );
+}
+
 async function obtenerClima(ciudad) {
 
     const apiKey = "98a1bb55ebe4e29a656ab2d1d6c02c1e";
 
-    const url =
-    `https://api.openweathermap.org/data/2.5/weather?q=${ciudad}&appid=${apiKey}&units=metric&lang=es`;
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${ciudad}&appid=${apiKey}&units=metric&lang=es`;
 
     const respuesta = await fetch(url);
 
@@ -30,26 +36,21 @@ async function obtenerClima(ciudad) {
     return datos.main.temp;
 }
 
+function crearTarjetaProyecto(rutaObjeto, index) {
 
-function crearTarjetaProyecto(ruta, conductor, hora, ciudad) {
     const tarjeta = templateRuta.content.cloneNode(true);
 
-    tarjeta.querySelector(".tituloRuta").textContent = ruta;
-    tarjeta.querySelector(".textoConductor").textContent = `Conductor: ${conductor}`;
-    tarjeta.querySelector(".textoHora").textContent = `Hora: ${hora}`;
-    tarjeta.querySelector(".textoClima").textContent = `Ciudad: ${ciudad}`;
+    tarjeta.querySelector(".tituloRuta").textContent = rutaObjeto.ruta;
+    tarjeta.querySelector(".textoConductor").textContent = `Conductor: ${rutaObjeto.conductor}`;
+    tarjeta.querySelector(".textoHora").textContent = `Hora: ${rutaObjeto.hora}`;
+    tarjeta.querySelector(".textoClima").textContent = `Ciudad: ${rutaObjeto.ciudad} - ${rutaObjeto.temperatura}°C`;
 
     const tarjetaElemento = tarjeta.querySelector(".tarjetaRuta");
     const inputEstudiante = tarjetaElemento.querySelector(".inputEstudiante");
     const btnAgregarEstudiante = tarjetaElemento.querySelector(".btnAgregarEstudiante");
     const listaEstudiantes = tarjetaElemento.querySelector(".listaEstudiantes");
-
     const btnEditar = tarjetaElemento.querySelector(".btnEditar");
     const btnEliminar = tarjetaElemento.querySelector(".btnEliminar");
-    const tituloRutaEl = tarjetaElemento.querySelector(".tituloRuta");
-    const conductorEl = tarjetaElemento.querySelector(".textoConductor");
-    const horaEl = tarjetaElemento.querySelector(".textoHora");
-    const ciudadEl = tarjetaElemento.querySelector(".textoClima");
 
     const contenedorEdicion = tarjetaElemento.querySelector(".contenedorEdicionRuta");
     const editarRutaInput = tarjetaElemento.querySelector(".editarRutaInput");
@@ -59,118 +60,233 @@ function crearTarjetaProyecto(ruta, conductor, hora, ciudad) {
     const btnGuardarEdicion = tarjetaElemento.querySelector(".btnGuardarEdicion");
     const btnCancelarEdicion = tarjetaElemento.querySelector(".btnCancelarEdicion");
 
-    btnAgregarEstudiante.addEventListener("click", () => {
-        const nombreEstudiante = inputEstudiante.value.trim();
-        if (nombreEstudiante === "") {
-            alert("Ingrese el nombre del estudiante");
-            return;
-        }
+    // MOSTRAR ESTUDIANTES GUARDADOS
+
+    rutaObjeto.estudiantes.forEach((estudiante) => {
 
         const estudianteItem = document.createElement("li");
-        estudianteItem.textContent = nombreEstudiante;
+
+        estudianteItem.textContent = estudiante;
+
         listaEstudiantes.appendChild(estudianteItem);
-        inputEstudiante.value = "";
+
+    });
+
+    // AGREGAR ESTUDIANTE
+
+    btnAgregarEstudiante.addEventListener("click", () => {
+
+        const nombreEstudiante = inputEstudiante.value.trim();
+
+        if (nombreEstudiante === "") {
+
+            alert("Ingrese el nombre del estudiante");
+            return;
+
+        }
+
+        rutaObjeto.estudiantes.push(nombreEstudiante);
+
+        guardarLocalStorage();
+
+        renderRutas();
+
         const eventoEstudiante = new CustomEvent("estudianteAgregado", {
 
-        detail: {
-            estudiante: nombreEstudiante,
-            ruta: ruta
-        }
+            detail: {
+                estudiante: nombreEstudiante,
+                ruta: rutaObjeto.ruta
+            }
+
+        });
+
+        document.dispatchEvent(eventoEstudiante);
 
     });
 
-    document.dispatchEvent(eventoEstudiante);
-    });
+    // EDITAR
 
     btnEditar.addEventListener("click", () => {
+
+        editarRutaInput.value = rutaObjeto.ruta;
+
+        editarConductorInput.value = rutaObjeto.conductor;
+
+        editarHoraInput.value = rutaObjeto.hora;
+
+        editarCiudadInput.value = rutaObjeto.ciudad;
+
         contenedorEdicion.style.display = "block";
         btnEditar.style.display = "none";
+
     });
+
+    // GUARDAR EDICIÓN
 
     btnGuardarEdicion.addEventListener("click", () => {
+
         const nuevoRuta = editarRutaInput.value.trim();
+
         const nuevoConductor = editarConductorInput.value.trim();
+
         const nuevaHora = editarHoraInput.value.trim();
+
         const nuevaCiudad = editarCiudadInput.value.trim();
 
-        if (nuevoRuta === "" || nuevoConductor === "" || nuevaHora === "" || nuevaCiudad === "") {
+        if (
+            nuevoRuta === "" ||
+            nuevoConductor === "" ||
+            nuevaHora === "" ||
+            nuevaCiudad === ""
+        ) {
+
             alert("Complete todos los campos");
             return;
+
         }
 
-        tituloRutaEl.textContent = nuevoRuta;
-        conductorEl.textContent = `Conductor: ${nuevoConductor}`;
-        horaEl.textContent = `Hora: ${nuevaHora}`;
-        ciudadEl.textContent = `Ciudad: ${nuevaCiudad}`;
+        rutas[index].ruta = nuevoRuta;
+        rutas[index].conductor = nuevoConductor;
+        rutas[index].hora = nuevaHora;
+        rutas[index].ciudad = nuevaCiudad;
 
-        contenedorEdicion.style.display = "none";
-        btnEditar.style.display = "inline-block";
+        guardarLocalStorage();
+
+        renderRutas();
+
     });
+
+    // CANCELAR EDICIÓN
 
     btnCancelarEdicion.addEventListener("click", () => {
+
         contenedorEdicion.style.display = "none";
+
         btnEditar.style.display = "inline-block";
+
     });
 
+    // ELIMINAR
+
     btnEliminar.addEventListener("click", () => {
-        tarjetaElemento.remove();
+
+        rutas.splice(index, 1);
+
+        guardarLocalStorage();
+
+        renderRutas();
+
     });
 
     return tarjeta;
 }
 
+// RENDER
+
+function renderRutas() {
+
+    contenedorRutas.innerHTML = "";
+
+    rutas.forEach((rutaObjeto, index) => {
+
+        const tarjeta = crearTarjetaProyecto(
+            rutaObjeto,
+            index
+        );
+
+        contenedorRutas.appendChild(tarjeta);
+
+    });
+
+}
+
+// LIMPIAR FORMULARIO
+
 function limpiarFormulario() {
+
     nombreRuta.value = "";
     nombreConductor.value = "";
     horaSalida.value = "";
     ciudadRuta.value = "";
+
 }
 
+// CREAR RUTA
+
 async function AgregarTarjeta() {
-    if (nombreRuta.value.trim() === "" || nombreConductor.value.trim() === "" || horaSalida.value.trim() === "" || ciudadRuta.value.trim() === "") {
+
+    if (
+        nombreRuta.value.trim() === "" ||
+        nombreConductor.value.trim() === "" ||
+        horaSalida.value.trim() === "" ||
+        ciudadRuta.value.trim() === ""
+    ) {
+
         alert("Complete todos los campos");
         return;
+
     }
 
     let temperatura;
+
     try {
+
         temperatura = await obtenerClima(ciudadRuta.value);
+
     } catch (error) {
-        alert("No se pudo obtener el clima. Revisa el nombre de la ciudad e inténtalo de nuevo.");
+
+        alert(
+            "No se pudo obtener el clima. Revisa el nombre de la ciudad."
+        );
+
         return;
+
     }
 
-    const nuevaRutaObjeto = {
-    ruta: nombreRuta.value,
-    conductor: nombreConductor.value,
-    hora: horaSalida.value,
-    ciudad: ciudadRuta.value,
-    temperatura: temperatura
-    };
-    rutas.push(nuevaRutaObjeto);
+    rutas.push({
 
+        ruta: nombreRuta.value,
 
-    const nuevaTarjeta = crearTarjetaProyecto(
-        nombreRuta.value,
-        nombreConductor.value,
-        horaSalida.value,
-        `${ciudadRuta.value} - ${temperatura}°C`
-    );
+        conductor: nombreConductor.value,
 
-    contenedorRutas.appendChild(nuevaTarjeta);
+        hora: horaSalida.value,
+
+        ciudad: ciudadRuta.value,
+
+        temperatura: temperatura,
+
+        estudiantes: []
+
+    });
+
+    guardarLocalStorage();
+
+    renderRutas();
 
     limpiarFormulario();
+
 }
 
-btnCrearRuta.addEventListener("click", AgregarTarjeta);
+btnCrearRuta.addEventListener(
+    "click", AgregarTarjeta
+);
 
-document.addEventListener("estudianteAgregado", (event) => {
+// EVENTO PERSONALIZADO
 
-    console.log(
-        `Nuevo estudiante agregado: ${event.detail.estudiante}
-        En la ruta: ${event.detail.ruta}`
-    );
+document.addEventListener("estudianteAgregado",
+    (event) => {
 
-});
+        console.log(
+            `Nuevo estudiante agregado:
+            ${event.detail.estudiante}
+            En la ruta:
+            ${event.detail.ruta}`
+        );
 
+    }
+);
+
+// RENDER INICIAL
+
+renderRutas();
 console.log(rutas);

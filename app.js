@@ -1,4 +1,5 @@
 let rutas = JSON.parse(localStorage.getItem("rutas")) || [];
+let nombres = ["mario", "pablo", "diego", "andres", "daniel"]
 
 const nombreRuta = document.getElementById("nombreRuta");
 const nombreConductor = document.getElementById("nombreConductor");
@@ -84,8 +85,21 @@ function crearTarjetaProyecto(rutaObjeto, index) {
             return;
 
         }
+        const estudianteExiste = rutas.some((ruta) => {
+
+            return ruta.estudiantes.includes(nombreEstudiante);
+        
+        });
+        
+        if (estudianteExiste) {
+        
+            alert("Este estudiante ya está asignado a otra ruta");
+        
+            return;
+        }
 
         rutaObjeto.estudiantes.push(nombreEstudiante);
+        nombres.push(nombreEstudiante)
 
         guardarLocalStorage();
 
